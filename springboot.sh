@@ -77,5 +77,5 @@ case $1 in
     status;;
     *)
 
-    echo -e "\033[0;31m Usage: \033[0m  \033[0;34m sh  $0  {start|stop|restart|status}  {SpringBootJarName} \033[0m\033[0;31m Example: \033[0m\033[0;33m sh  $0  start esmart-test.jar \033[0m"
+    echo -e "\033[31m Usage: \033[0m  \033[34m sh  $0  {start|stop|restart|status}  {SpringBootJarName} \033[0m\033[31m Example: \033[0m\033[33m sh  $0  start esmart-test.jar \033[0m"
 esac
