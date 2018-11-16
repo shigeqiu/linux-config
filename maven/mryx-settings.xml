@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" 
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+	<localRepository>/Users/slj/Downloads/maven/localRepository/</localRepository>
+	<pluginGroups>
+	</pluginGroups>
+	<proxies>
+	</proxies>
+
+	<servers>
+		<server>
+			<id>nexus</id>
+			<username>admin</username>
+			<password>MRyx123@#123</password>
+		</server>
+		<server>
+			<id>Snapshots</id>
+			<username>admin</username>
+			<password>MRyx123@#123</password>
+		</server>
+		<server>
+			<id>snapshots</id>
+			<username>admin</username>
+			<password>MRyx123@#123</password>
+		</server>
+		
+		<server>
+			<id>thirdparty</id>
+			<username>admin</username>
+			<password>MRyx123@#123</password>
+		</server>
+	</servers>
+	<mirrors>
+		
+		<mirror>
+			<id>nexus</id>
+			<mirrorOf>nexus</mirrorOf>
+			<name>nexus</name>
+			<url>http://123.59.40.151:8081/nexus/content/groups/public</url>		
+		</mirror>
+	  
+	</mirrors>
+  
+	<profiles>
+		<profile>
+			<id>nexus</id>
+			<repositories>
+				<repository>
+					<id>nexus</id>
+					<name>local private nexus</name>
+					<url>${releases.url}</url>
+				</repository>
+				<repository>
+					<id>thirdparty</id>
+					<url>http://123.59.40.151:8081/nexus/content/repositories/thirdparty/</url>
+					<releases>
+						<enabled>true</enabled>
+					</releases>
+					<snapshots>
+						<enabled>true</enabled>
+					</snapshots>
+				</repository>	
+			</repositories>
+			<pluginRepositories>
+				<pluginRepository>
+					<id>nexus</id>
+					<name>Maven China Mirror</name>
+					<url>${releases.url}</url>
+					<releases>
+						<enabled>true</enabled>
+					</releases>
+					<snapshots>
+						<enabled>false</enabled>
+					</snapshots>
+				</pluginRepository>
+			</pluginRepositories>
+			 <properties>
+				<releases.url>http://123.59.40.151:8081/nexus/content/groups/public/</releases.url>
+			</properties>
+		</profile>
+		<profile>
+			<id>Snapshots</id>
+			<repositories>
+				<repository>
+					<id>Snapshots</id>
+					<name>local private nexus snapshots</name>
+					<url>${snapshots.url}</url>
+				</repository>
+			</repositories>
+			<properties>
+			<releases.url>
+				http://123.59.40.151:8081/nexus/content/groups/public/
+			</releases.url>
+			<snapshots.url>
+				http://123.59.40.151:8081/nexus/content/repositories/snapshots/
+			</snapshots.url>
+		</properties>
+		</profile>
+	</profiles>
+	<activeProfiles>
+		<activeProfile>nexus</activeProfile>
+	</activeProfiles>
+	
+</settings>
