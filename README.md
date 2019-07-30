@@ -1,5 +1,6 @@
-# linux-shell
-shell 脚本
+# Linux Config
+
+linux 系统配置
 
 
 ## nginx 安装命令
