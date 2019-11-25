@@ -1,0 +1,26 @@
+<mapper namespace="one">
+
+
+    <!-- 父子表联查，resultMap 返回体拼装示例： -->
+
+    <resultMap id="departmentResultMap" type="map">
+        <id property="id" column="aid" />
+        <result  property="name" column="aname"/>
+        <collection property="child" ofType="map" javaType="list">
+            <id property="id" column="bid" />
+            <result  property="name" column="bname"/>
+        </collection>
+    </resultMap>
+
+    <select id="listDepartment" resultMap="departmentResultMap">
+        SELECT
+            a.id aid,
+            a.NAME aname,
+            b.id bid,
+            b.NAME bname
+        FROM
+            DV_DEPARTMENT a
+            LEFT JOIN DV_WARD b ON a.id = b.DEPARTMENT_ID
+    </select>
+
+</mapper>
