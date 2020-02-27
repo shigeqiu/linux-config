@@ -1,0 +1,20 @@
+#busbook.samsundot.com
+server
+{
+    server_name busbook.samsundot.com;
+    listen 80;
+    charset utf8;
+    index index.html index.htm;
+    error_page      404 500 502 503 504  /50x.html;
+    access_log off;
+    #access_log /data/nginx/logs/com.samsundot.busbook.log main;
+
+    location = /50x.html {
+        internal;
+        root html;
+    }
+    
+    location / {
+        root /websites/schoolbus.web;
+    }
+}

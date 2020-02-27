@@ -1,0 +1,73 @@
+# 班车接口
+upstream busbookapi_samsundot_com{
+    ip_hash;
+    server 10.10.10.127:8001;
+}
+
+#busbookapi.samsundot.com
+server
+{
+    server_name busbookapi.samsundot.com;
+    listen 80;
+    charset utf8;
+    index index.html index.htm;
+    error_page      404 500 502 503 504  /50x.html;
+    access_log on;
+    access_log /data/nginx/logs/com.samsundot.busbookapi.log main;
+
+    location = /50x.html {
+        access_log off;
+        internal;
+        root html;
+    }
+    
+    location /swagger {
+        access_log off;
+        index index.html index.htm;
+        proxy_redirect off;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_pass http://busbookapi_samsundot_com/swagger;
+    }
+
+    location /api {
+
+###############解决  跨域请求问题###################
+
+        set $flag -1;
+        if ($request_method = 'OPTIONS') {
+            set $flag 200;
+        }
+        if ($request_method = 'POST') {
+            set $flag 1;
+        }
+        if ($request_method = 'GET') {
+            set $flag 1;
+        }
+        if ($request_method = 'DELETE') {
+            set $flag 1;
+        }
+        if ($flag = 1) {
+            add_header Access-Control-Allow-Origin 'http://busbook.samsundot.com';
+            add_header Access-Control-Allow-Credentials true;
+            add_header Access-Control-Allow-Methods 'GET, POST, OPTIONS, DELETE';
+            add_header Access-Control-Allow-Headers *;
+        }
+        if ($flag = 200) {
+            add_header Access-Control-Allow-Origin 'http://busbook.samsundot.com';
+            add_header Access-Control-Allow-Credentials true;
+            add_header Access-Control-Allow-Methods 'GET, POST, OPTIONS, DELETE';
+            add_header Access-Control-Allow-Headers *;
+            return 200;
+        }
+        
+###############解决  跨域请求问题###################
+
+        proxy_redirect off;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_pass http://busbookapi_samsundot_com/api;
+    }
+}

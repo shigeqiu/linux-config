@@ -1,0 +1,31 @@
+# 缴费系统
+upstream jf_minghuaetc_com{
+    ip_hash;
+    server 10.10.10.128:8001;
+}
+
+#jf.minghuaetc.com
+server
+{
+    server_name jf.minghuaetc.com;
+    listen 80;
+    charset utf8;
+    index index.html index.htm;
+    error_page      404 500 502 503 504  /50x.html;
+    access_log on;
+    access_log /data/nginx/logs/com.minghuaetc.jf.log;
+
+    location = /50x.html {
+        access_log off;
+        internal;
+        root html;
+    }
+
+    location / {
+        proxy_redirect off;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_pass http://jf_minghuaetc_com/;
+    }
+}

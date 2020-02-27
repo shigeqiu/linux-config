@@ -1,0 +1,64 @@
+
+#站群Tomcat
+upstream tomcat_samsundot_com{
+    ip_hash;
+    server 10.10.10.127:8080;
+}
+
+upstream tomcat1_samsundot_com{
+    ip_hash;
+    server 10.10.10.126:8080;
+}
+
+
+#tomcat.samsundot.com
+server
+{
+    server_name tomcat.samsundot.com;
+    listen 80;
+    charset utf8;
+    index index.html index.htm;
+    error_page      404 500 502 503 504  /50x.html;
+    access_log on;
+    access_log /data/nginx/logs/com.samsundot.tomcat.log main;
+
+    location = /50x.html {
+        access_log off;
+        internal;
+        root html;
+    }
+
+    location / {
+        proxy_redirect off;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_pass http://tomcat_samsundot_com/;
+    }
+}
+
+#tomcat1.samsundot.com
+server
+{
+    server_name tomcat1.samsundot.com;
+    listen 80;
+    charset utf8;
+    index index.html index.htm;
+    error_page      404 500 502 503 504  /50x.html;
+    access_log on;
+    access_log /data/nginx/logs/com.samsundot.tomcat1.log main;
+
+    location = /50x.html {
+        access_log off;
+        internal;
+        root html;
+    }
+
+    location / {
+        proxy_redirect off;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_pass http://tomcat1_samsundot_com/;
+    }
+}
